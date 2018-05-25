@@ -1,4 +1,4 @@
-function p = predict(theta, X)
+ function p = predict(theta, X)
 %PREDICT Predict whether the label is 0 or 1 using learned logistic 
 %regression parameters theta
 %   p = PREDICT(theta, X) computes the predictions for X using a 
@@ -15,9 +15,8 @@ p = zeros(m, 1);
 %               You should set p to a vector of 0's and 1's
 %
 
-
-
-
+h =  X * theta;
+p = round(sigmoid(h));
 
 
 
