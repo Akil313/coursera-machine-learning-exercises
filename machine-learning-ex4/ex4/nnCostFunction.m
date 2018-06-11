@@ -61,18 +61,43 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+X = [ones(m,1) X];
 
+%Consider X having only one example, the input values are multiplied by
+%every set of parameters for each hidden unit. Every hidden unit has a
+%different set of parameters for each input value.
+z2 = X*Theta1';
 
+%Apply the sigmoid activation function to every value of z
+a2 = sigmoid(z2);
 
+%Repeat for second to third layer since we only have 3 layers.
+%Add bias unit to a2
+a2 = [ones(size(a2, 1), 1) a2];
+z3 = a2*Theta2';
 
+a3 = sigmoid(z3);
 
+for i=1:m
+    
+    y_val = zeros(num_labels, 1);
+        
+    for temp=1:num_labels
+        if temp == y(i)
+            y_val(temp) = 1;
+        end
+    end
+    
+    for j=1:num_labels
+        
+        J = J + ...
+        ( ( y_val(j) * a3(((3*i)-3)+j) ) + ...
+        ( ((1 - y_val(j)) * log(1 - a3(((3*i)-3)+j) ) ) ) );
 
+    end
+end
 
-
-
-
-
-
+J = J * -(1/m);
 
 
 
