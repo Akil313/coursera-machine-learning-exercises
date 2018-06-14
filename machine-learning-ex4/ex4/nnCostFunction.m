@@ -1,4 +1,4 @@
-function [J grad] = nnCostFunction(nn_params, ...
+function [J, grad] = nnCostFunction(nn_params, ...
                                    input_layer_size, ...
                                    hidden_layer_size, ...
                                    num_labels, ...
@@ -61,6 +61,7 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+
 a1 = [ones(m,1) X];
 
 %Consider X having only one example, the input values are multiplied by
@@ -88,10 +89,34 @@ sqTheta2 = Theta2(:, 2:end) .^ 2;
 J = (1/m) * sum(sum(cost)) + ((lambda/(2*m)) * ((sum(sum(sqTheta1))) + sum(sum(sqTheta2))));
 
 %Back Prop
+delta1 = 0;
+delta2 = 0;
 
+for t=1:m
+    
+    a1_t = a1(t, :)';
+    
+    a2_t = a2(t, :)';
+    
+    a3_t = a3(t, :)';
+    
+    y_output_t = y(t, :)';
+    
+    delta3_t = (a3_t - y_output_t);
+    
+    z2_t = [1; Theta1 * a1_t];
+    
+    delta2_t = (Theta2' * delta3_t) .* sigmoidGradient(z2_t);
+    
+    delta2_t = delta2_t(2:end);
+    
+    delta2 = delta2 + (delta3_t * a2_t');
+    delta1 = delta1 + (delta2_t * a1_t');
+    
+end
 
-
-
+Theta1_grad = (1/m) * delta1;
+Theta2_grad = (1/m) * delta2;
 % -------------------------------------------------------------
 
 % =========================================================================
