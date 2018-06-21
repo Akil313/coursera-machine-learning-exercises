@@ -81,12 +81,18 @@ a3 = sigmoid(z3);
 
 yMatrix = repmat([1:num_labels], m, 1) == repmat(y, 1, num_labels);
 
-cost = (-yMatrix .* log(a3)) - ((1 - yMatrix) .* log(1 - a3));
+a3(1, :)
+fprintf('Program paused. Press enter to continue.\n');
+pause;
+
+
+
+cost = (yMatrix .* log(a3)) + ((1 - yMatrix) .* log(1 - a3));
 
 sqTheta1 = Theta1(:, 2:end) .^ 2;
 sqTheta2 = Theta2(:, 2:end) .^ 2;
 
-J = (1/m) * sum(sum(cost)) + ((lambda/(2*m)) * ((sum(sum(sqTheta1))) + sum(sum(sqTheta2))));
+J = -(1/m) * sum(sum(cost)) + ((lambda/(2*m)) * ((sum(sum(sqTheta1))) + sum(sum(sqTheta2))));
 
 %Back Prop
 delta1 = 0;
