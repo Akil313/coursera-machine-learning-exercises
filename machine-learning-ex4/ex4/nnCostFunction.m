@@ -75,17 +75,12 @@ a2 = sigmoid(z2);
 %Repeat for second to third layer since we only have 3 layers.
 %Add bias unit to a2
 a2 = [ones(m, 1) a2];
+
 z3 = a2*Theta2';
 
 a3 = sigmoid(z3);
 
 yMatrix = repmat([1:num_labels], m, 1) == repmat(y, 1, num_labels);
-
-a3(1, :)
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-
 
 cost = (yMatrix .* log(a3)) + ((1 - yMatrix) .* log(1 - a3));
 
@@ -117,6 +112,7 @@ for t=1:m
     delta2_t = delta2_t(2:end);
     
     delta2 = delta2 + (delta3_t * a2_t');
+    
     delta1 = delta1 + (delta2_t * a1_t');
     
 end
